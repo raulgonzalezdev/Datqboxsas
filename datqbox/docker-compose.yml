@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: datqbox
+      POSTGRES_PASSWORD: datqbox
+      POSTGRES_DB: datqbox
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/postgresql/data
+
+  hasura:
+    image: hasura/graphql-engine:v2.36.1
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://datqbox:datqbox@postgres:5432/datqbox
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: supersecretadmin
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "datqbox_super_jwt_secret"}'
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  nhost-auth:
+    image: nhost/hasura-auth:0.24.3
+    restart: always
+    environment:
+      AUTH_SERVER_PORT: 4000
+      HASURA_GRAPHQL_DATABASE_URL: postgres://datqbox:datqbox@postgres:5432/datqbox
+      HASURA_GRAPHQL_GRAPHQL_URL: http://hasura:8080/v1/graphql
+      JWT_SECRET: datqbox_super_jwt_secret
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_USER: ""
+      SMTP_PASS: ""
+      EMAIL_FROM: "no-reply@datqbox.com"
+      AUTH_EXTERNAL_AUTH_PROVIDERS: "google,github"
+      AUTH_GOOGLE_CLIENT_ID: "REEMPLAZAR_TU_GOOGLE_CLIENT_ID"
+      AUTH_GOOGLE_CLIENT_SECRET: "REEMPLAZAR_TU_GOOGLE_CLIENT_SECRET"
+      AUTH_GITHUB_CLIENT_ID: "REEMPLAZAR_TU_GITHUB_CLIENT_ID"
+      AUTH_GITHUB_CLIENT_SECRET: "REEMPLAZAR_TU_GITHUB_CLIENT_SECRET"
+      AUTH_2FA_ENABLED: "true"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+      - hasura
+
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - "8025:8025"
+    logging:
+      driver: "none"
+
+volumes:
+  db_data:
