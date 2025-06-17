@@ -1,0 +1,40 @@
+# Archivos y carpetas ignorados para proyectos Docker/Hasura/Nhost
+
+# Archivos de entorno y secretos
+.env
+*.env
+
+# Archivos temporales y logs
+*.log
+*.tmp
+*.swp
+
+# Salidas de Docker
+/db_data/
+
+# Directorios de Hasura local
+hasura/metadata/.history/
+hasura/migrations/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de usuario/editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Archivos de backup
+*~
+*.bak
+
+# Node modules (si usas algún tooling JS en el futuro)
+node_modules/
+
+# Salidas de tests
+coverage/
+
+# Otros
+__pycache__/
