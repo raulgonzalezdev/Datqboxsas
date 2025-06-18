@@ -33,6 +33,8 @@ services:
       AUTH_SERVER_PORT: 4000
       HASURA_GRAPHQL_DATABASE_URL: postgres://datqbox:datqbox@postgres:5432/datqbox
       HASURA_GRAPHQL_GRAPHQL_URL: http://hasura:8080/v1/graphql
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       JWT_SECRET: datqbox_super_jwt_secret
       SMTP_HOST: mailhog
       SMTP_PORT: 1025
