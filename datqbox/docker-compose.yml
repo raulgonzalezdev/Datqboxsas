@@ -20,7 +20,7 @@ services:
       HASURA_GRAPHQL_DATABASE_URL: postgres://datqbox:datqbox@postgres:5432/datqbox
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_ADMIN_SECRET: supersecretadmin
-      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "datqbox_super_jwt_secret"}'
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
     ports:
       - "8080:8080"
     depends_on:
