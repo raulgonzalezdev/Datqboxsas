@@ -38,3 +38,4 @@ coverage/
 
 # Otros
 __pycache__/
+.env
